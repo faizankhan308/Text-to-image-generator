@@ -6,7 +6,13 @@ const connectDB = async () => {
         console.log("Database Connected");
     })
 
-    await mongoose.connect(`${process.env.MONGODB_URI}/ai-image`)
+    if (!process.env.MONGODB_URI) {
+        throw new Error("MONGODB_URI environment variable is missing. Please configure it in your Render environment settings.");
+    }
+
+    await mongoose.connect(process.env.MONGODB_URI, {
+        dbName: 'ai-image'
+    });
 
 }
 
