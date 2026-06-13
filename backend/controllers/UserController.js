@@ -200,11 +200,14 @@ const verifyRazorpay = async (req, res) => {
 }
 
 // Stripe Gateway Initialize
-const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
+const stripeInstance = process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== '------ Stripe Secret Key here ------' ? new stripe(process.env.STRIPE_SECRET_KEY) : null;
 
 // Payment API to add credits ( Stripe )
 const paymentStripe = async (req, res) => {
     try {
+        if (!stripeInstance) {
+            return res.json({ success: false, message: 'Stripe is not configured on the server.' })
+        }
 
         const { userId, planId } = req.body
         const { origin } = req.headers
