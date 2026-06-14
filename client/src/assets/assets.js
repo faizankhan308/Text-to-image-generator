@@ -19,7 +19,6 @@ import star_group from './star_group.png'
 import credit_star from './credit_star.svg'
 import profile_icon from './profile_icon.png'
 import razorpay_logo from './razorpay_logo.png'
-import stripe_logo from './stripe_logo.png'
 
 export const assets = {
     logo,
@@ -37,8 +36,7 @@ export const assets = {
     star_group,
     credit_star,
     profile_icon,
-    razorpay_logo,
-    stripe_logo
+    razorpay_logo
 }
 
 export const stepsData = [
