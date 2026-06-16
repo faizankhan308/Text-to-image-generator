@@ -1,7 +1,17 @@
 import mongoose from "mongoose";
 
+const maskUri = (uri) => {
+    if (!uri) return uri;
+    return uri.replace(/(mongodb(?:\+srv)?:\/\/[^:]+:)[^@]+(@.*)/, '$1******$2');
+}
+
 const sanitizeMongodbUri = (uri) => {
-    if (!uri || !uri.startsWith('mongodb+srv://')) {
+    if (uri) {
+        // Strip quotes and whitespace that could have been pasted by mistake in env config
+        uri = uri.trim().replace(/^['"]|['"]$/g, '').trim();
+    }
+    
+    if (!uri || !uri.toLowerCase().startsWith('mongodb+srv://')) {
         return uri;
     }
     try {
@@ -48,6 +58,8 @@ const connectDB = async () => {
     }
 
     const sanitizedUri = sanitizeMongodbUri(process.env.MONGODB_URI);
+    
+    console.log(`Connecting to MongoDB using URI: ${maskUri(sanitizedUri)}`);
 
     await mongoose.connect(sanitizedUri, {
         dbName: 'ai-image'
